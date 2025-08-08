@@ -8,7 +8,7 @@ var config = {
     config: {
         mixins: {
             'Magento_Catalog/js/price-options': {
-                'Infrangible_CatalogProductQty/js/price-options-mixin': true
+                'Infrangible_CatalogProductOptionValueLabel/js/price-options-mixin': true
             }
         }
     }
