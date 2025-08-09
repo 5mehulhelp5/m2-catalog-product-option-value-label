@@ -11,7 +11,7 @@ define([
     'use strict';
 
     return function (widget) {
-        $.widget('mage.priceBox', widget, {
+        $.widget('mage.priceOptions', widget, {
             _applyOptionNodeFix: function applyOptionNodeFix(options) {
                 this._super(options);
 
@@ -46,9 +46,49 @@ define([
                         }
                     });
                 });
+
+                options.filter(':radio,:checkbox').each(function(index, element) {
+                    var $element = $(element),
+                        optionId = utils.findOptionId($element),
+                        optionValue = $element.val(),
+                        optionConfig = config.optionConfig && config.optionConfig[optionId],
+                        $optionTitle,
+                        $optionPriceNotice,
+                        prefix,
+                        $optionPrefix,
+                        suffix,
+                        $optionSuffix;
+
+                    if (! optionValue && optionValue !== 0) {
+                        return;
+                    }
+
+                    $optionTitle = $element.parent().find('label.label > span:first');
+                    $optionPriceNotice = $element.parent().find('label.label > span.price-notice');
+
+                    prefix = optionConfig[optionValue] ? optionConfig[optionValue].prefix : null;
+                    if (prefix) {
+                        $optionPrefix = $('<span>', {class: 'prefix'});
+                        $optionPrefix.text(prefix);
+
+                        $optionTitle.before($optionPrefix);
+                    }
+
+                    suffix = optionConfig[optionValue] ? optionConfig[optionValue].suffix : null;
+                    if (suffix) {
+                        $optionSuffix = $('<span>', {class: 'suffix'});
+                        $optionSuffix.text(suffix);
+
+                        if ($optionPriceNotice.length > 0) {
+                            $optionPriceNotice.after($optionSuffix);
+                        } else {
+                            $optionTitle.after($optionSuffix);
+                        }
+                    }
+                });
             }
         });
 
-        return $.mage.priceBox;
+        return $.mage.priceOptions;
     };
 });
