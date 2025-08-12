@@ -34,7 +34,7 @@ class Select
         if ($option instanceof Option) {
             $optionValues = $option->getValues();
 
-            if ($optionValues !== null) {
+            if ($optionValues !== null && ! $subject->getData('value_labels_processed')) {
                 foreach ($options as &$option) {
                     $optionValueId = $option[ 'value' ];
 
@@ -67,6 +67,11 @@ class Select
                         }
                     }
                 }
+
+                $subject->setData(
+                    'value_labels_processed',
+                    true
+                );
             }
         }
 
